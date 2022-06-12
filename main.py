@@ -104,6 +104,7 @@ truth = truth[indx]
 # Split data into train and test
 X_train, X_test, y_train, y_test = train_test_split(patches, truth, test_size= 0.3, random_state = int(time.time()), shuffle = True)
 
+# Save data in npz file
 np.savez_compressed(basedir +"/train_test_split_lidar11_iter1.npz", X_train = X_train, X_test = X_test, y_train = y_train, y_test = y_test)
 
 file = np.load(basedir+"/train_test_split_lidar11_iter1.npz")
@@ -112,23 +113,26 @@ X_test = file['X_test']
 y_train = file['y_train']
 y_test = file['y_test']
 
-# Normalize the data
+# Normalize channel 1(Height) of the train data
 ch1 = X_train[:, :, :, 0]
 pmin = np.amin(ch1)
 pmax = np.amax(ch1)
 ch1 = (ch1-pmin) / (pmax- pmin) 
 
-
+# Normalize channel 2(Intensity) of the train data
 ch2 = X_train[:, :, :, 1]
 pmin1 = np.amin(ch2)
 pmax1 = np.amax(ch2)
 ch2 = (ch2-pmin1) / (pmax1- pmin1) 
+
 X_train[:,:,:,0] = ch1
 X_train[:,:,:,1] = ch2
 
+# Normalize channel 1(Height) the test data
 ch3 = X_test[:, :, :, 0]
 ch3 = (ch3-pmin) / (pmax- pmin) 
 
+# Normalize channel 2(Intensity) of the test data
 ch4 = X_test[:, :, :, 1]
 ch4 = (ch4-pmin1) / (pmax1- pmin1) 
 
@@ -167,6 +171,7 @@ y_test = to_categorical(y_test,num_classes = 11, dtype ="int32")
 input = X_train[0]
 print(input.shape)
 
+# Define the CNN model
 def get_model():
 
     model = Sequential()
@@ -194,29 +199,29 @@ def get_model():
     return model
 
 
-
+# Get model and fit
 model = get_model()
 model.fit(X_train, y_train, epochs= 20, batch_size= 256, verbose= 1)
 model.save(basedir + "/lidar_model11_iter1.h5")
 
 model = load_model(basedir+ "/lidar_model11_iter1.h5")
 
+# Predict on test data
 y_pred = model.predict(X_test)
 y_pred = np.argmax(y_pred, axis= -1)
 y_test = np.argmax(y_test, axis= -1)
 
+# Print Accuracy
 correct = len(y_pred) - np.count_nonzero(y_pred - y_test)
 acc = correct/ len(y_pred)
 acc = np.round(acc, 4) * 100
    
 print("Accuracy: ", acc)
 
+# Compute confusion matrix
 class_names = ['Trees', 'Mostly grass', 'Mixed ground', 'Dirt and sand', 'road', 'water', 'building shadow', 'building', 'sidewalk', 'yellow curb', 'cloth panels']
-
 cm = confusion_matrix(y_test, y_pred, normalize= 'true')
 cm = np.round(cm, 3)
-
 disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=class_names)
-
 disp.plot()
 plt.show()
