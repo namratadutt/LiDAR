@@ -15,7 +15,7 @@
 
 #### Results:
 An accuracy of 87.65% ± 3.08 was achieved with CNN. The Confusion matrix is shown below:
-<img width="1151" alt="lidar_iter6" src="https://user-images.githubusercontent.com/50796784/173219210-f77b505e-cfd2-4cd6-a245-66a1d3989694.png">
+<img width="846" alt="lidar_github" src="https://user-images.githubusercontent.com/50796784/173219964-812a02ab-952e-4f67-a590-35bc738a69cb.png">
 
 
 #### References
