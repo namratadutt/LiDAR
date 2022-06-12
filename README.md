@@ -1,5 +1,5 @@
 # LiDAR
-### A brief tutorial on how to take NXN patches for LiDAR classification
+### LiDAR classification using neighbourhood region of NxN surrounding a pixel
 
 <hr>
 
