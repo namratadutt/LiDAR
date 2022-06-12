@@ -13,6 +13,11 @@
 
 <hr>
 
+#### Results:
+An accuracy of 87.65% ± 3.08 was achieved with CNN. The Confusion matrix is shown below:
+<img width="1151" alt="lidar_iter6" src="https://user-images.githubusercontent.com/50796784/173219210-f77b505e-cfd2-4cd6-a245-66a1d3989694.png">
+
+
 #### References
 
 P. Gader, A. Zare, R. Close, J. Aitken, G. Tuell, “MUUFL Gulfport Hyperspectral and LiDAR Airborne Data Set,” University of Florida, Gainesville, FL, Tech. Rep. REP-2013-570, Oct. 2013.
